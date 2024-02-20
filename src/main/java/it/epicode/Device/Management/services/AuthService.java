@@ -34,13 +34,9 @@ public class AuthService {
         userRepo.findByEmail(payload.email()).ifPresent(user -> {
             throw new RuntimeException("L'email é giá in uso");
         });
-        User newUser = new User();
-        newUser.setUsername(payload.username());
-        newUser.setName(payload.name());
-        newUser.setSurname(payload.surname());
-        newUser.setEmail(payload.email());
-        newUser.setAvatar(payload.avatar());
-        newUser.setPassword(bcrypt.encode(payload.password()));
+        User newUser = new User(payload.name(), payload.surname(),
+                payload.email(), bcrypt.encode(payload.password()),
+                "https://ui-avatars.com/api/?name" + payload.name() + "+" + payload.surname());
         return userRepo.save(newUser);
     }
 }
